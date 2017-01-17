@@ -2,9 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import pprint
 
-page = requests.get('http://bachelor.realityfantasyleague.com/contestants')
-soup = BeautifulSoup(page.content, 'html.parser')
-
 class FantasyLeague(object):
 
 	def __init__(self, name, teams):
@@ -15,6 +12,8 @@ class FantasyLeague(object):
 
 	def getContestants(self):
 		score_dict = {}
+		page = requests.get('http://bachelor.realityfantasyleague.com/contestants')
+		soup = BeautifulSoup(page.content, 'html.parser')
 		for section in soup.find_all("section"):
 			for tr in section.findAll("div", "tr"):
 				try:
@@ -23,7 +22,6 @@ class FantasyLeague(object):
 					score_dict[name] = float(score)
 				except:
 					pass
-		pprint.pprint(score_dict)
 		return score_dict
 
 	def getTeamScores(self):
@@ -36,6 +34,7 @@ class FantasyLeague(object):
 			print("Manager: %s" % team.manager)
 			print("Team Name: %s" % team.team_name)
 			print("Score: %f" % team.score)
+			print("------------------------------------")
 
 
 class FantasyTeam(object):
